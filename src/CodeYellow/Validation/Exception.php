@@ -1,7 +1,7 @@
 <?php
 namespace CodeYellow\Validation;
 
-use \Illuminate\Contracts\Validation\ValidationException;
+use \Illuminate\Validation\ValidationException;
 
 /**
  * A custom exception that extends the validation exception
@@ -11,7 +11,7 @@ use \Illuminate\Contracts\Validation\ValidationException;
  */
 class Exception extends ValidationException
 {
-    protected $validator;
+    public $validator;
 
     /**
      * Construct a new Exception. Will save the validator
@@ -34,7 +34,7 @@ class Exception extends ValidationException
     /**
      * Get the validator that triggered this error.
      *
-     * @return CodeYellow\Api\Validation\Validator Validator that
+     * @return \CodeYellow\Validation\Validator Validator that
      * triggered the exception.
      */
     public function getValidator()

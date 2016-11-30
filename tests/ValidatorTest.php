@@ -11,7 +11,7 @@ use \Symfony\Component\Translation\TranslatorInterface;
 /**
  * @group validator
  */
-class ValidatorTest extends \PHPUnit\Framework\TestCase
+class ValidatorTest extends BaseTest
 {
 
     /**
@@ -52,7 +52,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testVerifyOk($testCase)
     {
-        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $this->assertTrue($validator->verify($testCase));
     }
 
@@ -64,7 +64,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testVerifyNotOk($testCase)
     {
-        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         // age is too low
         $this->assertFalse(
             $validator->verify($testCase)
@@ -81,7 +81,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testParseOk($testCase)
     {
-        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $toParse = $testCase;
         $returned = $validator->parse($toParse);
 
@@ -98,11 +98,11 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      * correct.
      *
      * @dataProvider notOkProvider
-     * @expectedException CodeYellow\Validation\Exception
+     * @expectedException \CodeYellow\Validation\Exception
      */
     public function testParseNotOk($testCase)
     {
-        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $validator->parse($testCase);
     }
 
@@ -111,7 +111,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testParseChangeDataType()
     {
-        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
 
         $testCase = [
                 'age' => '10',
@@ -129,7 +129,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testParseFiltersData()
     {
-        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new SimpleValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
 
         $testCase = [
                 'age' => 10,
@@ -148,7 +148,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCustomRule()
     {
-        $validator = new CustomRuleValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new CustomRuleValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
 
         $this->assertTrue($validator->verify([
                 'age' => 9
@@ -182,7 +182,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateBooleanOk($input, $expectedResult)
     {
-        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['boolean' => $input];
         $validator->parse($params);
 
@@ -195,7 +195,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateBooleanNotOk()
     {
-        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['boolean' => '12'];
         $this->assertFalse($validator->verify($params));
     }
@@ -220,7 +220,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateIntegerOk($input, $expectedResult)
     {
-        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['integer' => $input];
         $validator->parse($params);
 
@@ -233,7 +233,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateIntegerNotOk()
     {
-        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['integer' => 'string'];
         $this->assertFalse($validator->verify($params));
     }
@@ -268,7 +268,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateNumericOk($input, $expectedResult)
     {
-        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['numeric' => $input];
         $validator->parse($params);
 
@@ -281,7 +281,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateNumericNotOk()
     {
-        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['numeric' => 'string'];
         $this->assertFalse($validator->verify($params));
     }
@@ -308,7 +308,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidateStringNotOk($noString)
     {
-        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['string' => $noString];
         $this->assertFalse($validator->verify($params));
     }
@@ -321,7 +321,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testParseStringNotOk($noString)
     {
-        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new AllTypeValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['string' => $noString];
         $validator->parse($params);
     }
@@ -332,7 +332,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testExistsWorks()
     {
-        $validator = new ExistsValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new ExistsValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['id' => 1];
 
         $this->assertTrue($validator->verify($params));
@@ -344,7 +344,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testRequiredWorks()
     {
-        $validator = new RequiredValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new RequiredValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
 
         $this->assertTrue($validator->verify(['username' => 'test2']));
     }

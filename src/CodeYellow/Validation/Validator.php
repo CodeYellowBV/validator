@@ -3,7 +3,7 @@ namespace CodeYellow\Validation;
 
 use \Symfony\Component\Translation\TranslatorInterface;
 use \Illuminate\Validation\PresenceVerifierInterface;
-use App;
+use \Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Arr;
 
 /**
@@ -20,6 +20,13 @@ class Validator extends \Illuminate\Validation\Validator
     protected $validators = [];
 
     /**
+     * Dependency Injection container
+     *
+     * @var Container
+     */
+    protected $container;
+
+    /**
      * Construct a Validator, and set all the data to the predefined data
      * Also, sets data to an empty array.
      *
@@ -28,14 +35,15 @@ class Validator extends \Illuminate\Validation\Validator
      */
     public function __construct(
         TranslatorInterface $translator,
-        PresenceVerifierInterface $presenceVerifier
+        PresenceVerifierInterface $presenceVerifier,
+        Container $container
     ) {
         is_array($this->rules) || $this->rules = [];
         is_array($this->messages) || $this->messages = [];
         is_array($this->customAttributes) || $this->customAttributes = [];
         parent::__construct($translator, [], $this->rules, $this->messages, $this->customAttributes);
         $this->setPresenceVerifier($presenceVerifier);
-
+        $this->container = $container;
         // See https://github.com/laravel/framework/commit/980d098ad091a5087a93202ebd4c091e336f3e58
         $this->implicitRules = array_merge($this->implicitRules, ['Array', 'Boolean', 'Integer', 'Numeric', 'String']);
     }
@@ -209,7 +217,7 @@ class Validator extends \Illuminate\Validation\Validator
     public function validateValidator($attribute, $value, $parameters)
     {
         foreach ($parameters as $validatorClass) {
-            $validator = App::make($validatorClass);
+            $validator = $this->container->make($validatorClass);
 
             foreach ($value as &$phonenumber) {
                 $phonenumber = $validator->parse($phonenumber);
@@ -244,7 +252,7 @@ class Validator extends \Illuminate\Validation\Validator
                 throw new \InvalidArgumentException('Can\'t find the validator ' . $className);
             }
 
-            $validator = app()->make($className);
+            $validator = $this->container->make($className);
         }
 
         if (! ($validator instanceof Validator)) {
@@ -298,7 +306,7 @@ class Validator extends \Illuminate\Validation\Validator
                 throw new \InvalidArgumentException('Can\'t find the validator ' . $className);
             }
 
-            $validator = app()->make($className);
+            $validator = $this->container->make($className);
         }
 
         if (! ($validator instanceof Validator)) {
@@ -322,7 +330,7 @@ class Validator extends \Illuminate\Validation\Validator
                 }
 
                 $className = get_class($validator);
-                $validator = app()->make($className); // New validator to make sure that messages are only inserted once
+                $validator = $this->container->make($className); // New validator to make sure that messages are only inserted once
             }
             $counter++;
         }

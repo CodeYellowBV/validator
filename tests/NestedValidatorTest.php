@@ -3,7 +3,7 @@ namespace CodeYellow\Test\Validation;
 
 use CodeYellow\Api\Test\Validation\Mock\NestedValidator;
 
-class NestedValidatorTest extends \PHPUnit\Framework\TestCase
+class NestedValidatorTest extends BaseTest
 {
     /**
      * Returns test cases that are valid.
@@ -62,7 +62,7 @@ class NestedValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testVerifyOk($testCase)
     {
-        $validator = new NestedValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new NestedValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $this->assertTrue($validator->verify($testCase));
     }
 
@@ -74,7 +74,7 @@ class NestedValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testVerifyNotOk($testCase)
     {
-        $validator = new NestedValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new NestedValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         // age is too low
         $this->assertFalse(
             $validator->verify($testCase)
@@ -89,7 +89,7 @@ class NestedValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testMessage()
     {
-        $validator = new NestedValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new NestedValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $validator->verify([
             'nested' => [   // not ok
                 'age' => 1,

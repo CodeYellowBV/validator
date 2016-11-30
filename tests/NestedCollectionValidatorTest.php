@@ -3,7 +3,7 @@ namespace CodeYellow\Test\Validation;
 
 use CodeYellow\Api\Test\Validation\Mock\NestedCollectionValidator;
 
-class NestedCollectionValidatorTest extends \PHPUnit\Framework\TestCase
+class NestedCollectionValidatorTest extends BaseTest
 {
     /**
      * Returns test cases that are valid.
@@ -85,7 +85,7 @@ class NestedCollectionValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testVerifyOk($testCase)
     {
-        $validator = new NestedCollectionValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new NestedCollectionValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $validator->verify($testCase);
 
 
@@ -101,7 +101,7 @@ class NestedCollectionValidatorTest extends \PHPUnit\Framework\TestCase
     public function testVerifyNotOk($testCase)
     {
 
-        $validator = new NestedCollectionValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new NestedCollectionValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
 
 
         // age is too low
@@ -116,7 +116,7 @@ class NestedCollectionValidatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testMessage()
     {
-        $validator = new NestedCollectionValidator($this->getTranslator(), $this->getPresenceVerifier());
+        $validator = new NestedCollectionValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $validator->verify([
             'nested' => [
                 [   // one element ok, one element not ok

@@ -10,19 +10,8 @@ use Mockery as m;
 /**
  * @group arrayValidator
  */
-class ArrayValidatorTest extends \PHPUnit\Framework\TestCase
+class ArrayValidatorTest extends BaseTest
 {
-    private function getTranslator()
-    {
-        return m::mock('Symfony\Component\Translation\TranslatorInterface');
-    }
-
-    private function getPresenceVerifier()
-    {
-        return m::mock('Illuminate\Validation\PresenceVerifierInterface');
-    }
-
-
     /**
      * Returns an arrayvalidator object
      */
@@ -31,7 +20,8 @@ class ArrayValidatorTest extends \PHPUnit\Framework\TestCase
         return new ArrayValidator(
             new Validator(
                 $this->getTranslator(),
-                $this->getPresenceVerifier()
+                $this->getPresenceVerifier(),
+                $this->getContainer()
             )
         );
     }
@@ -191,7 +181,7 @@ class ArrayValidatorTest extends \PHPUnit\Framework\TestCase
      * Test if the get returns an error if the test is not ok
      *
      * @dataProvider notOkProvider
-     * @expectedException \CodeYellow\Api\Validation\Exception
+     * @expectedException \CodeYellow\Validation\Exception
      */
     public function testGetNotOk($params, $key, $rules)
     {
