@@ -98,7 +98,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      * correct.
      *
      * @dataProvider notOkProvider
-     * @expectedException CodeYellow\Api\Validation\Exception
+     * @expectedException CodeYellow\Validation\Exception
      */
     public function testParseNotOk($testCase)
     {
@@ -317,7 +317,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
      * Test if a numerical value as string is not ok for the pase method.
      *
      * @dataProvider noStringProvider
-     * @expectedException CodeYellow\Api\Validation\Exception
+     * @expectedException \CodeYellow\Validation\Exception
      */
     public function testParseStringNotOk($noString)
     {

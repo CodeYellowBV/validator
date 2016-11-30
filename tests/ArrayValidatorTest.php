@@ -1,19 +1,28 @@
 <?php
 namespace CodeYellow\Test\Validation;
 
-use \CodeYellow\Api\Test\Validation\Mock\CustomRuleValidator;
-use \CodeYellow\Api\Test\Validation\Mock\SimpleValidator;
-use \CodeYellow\Api\Test\Validation\Mock\AllTypeValidator;
-use \Symfony\Component\Translation\TranslatorInterface;
-use \CodeYellow\Api\Validation\ArrayValidator;
-use \CodeYellow\Api\Validation\Validator;
+
+use \CodeYellow\Validation\ArrayValidator;
+use \CodeYellow\Validation\Validator;
 use \Illuminate\Support\MessageBag;
+use Mockery as m;
 
 /**
  * @group arrayValidator
  */
 class ArrayValidatorTest extends \PHPUnit\Framework\TestCase
 {
+    private function getTranslator()
+    {
+        return m::mock('Symfony\Component\Translation\TranslatorInterface');
+    }
+
+    private function getPresenceVerifier()
+    {
+        return m::mock('Illuminate\Validation\PresenceVerifierInterface');
+    }
+
+
     /**
      * Returns an arrayvalidator object
      */
