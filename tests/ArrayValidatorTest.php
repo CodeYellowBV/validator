@@ -213,6 +213,7 @@ class ArrayValidatorTest extends BaseTest
     {
         $arrayValidator = $this->getArrayValidator();
         $params['customer_id'] = 1;
+        $this->setExistsValue(true);
         $customerId = $arrayValidator->get($params, 'customer_id', 'exists:customers,id');
 
         // It still must be an integer, so assertSame
@@ -229,7 +230,7 @@ class ArrayValidatorTest extends BaseTest
                 [], 'foo', ['foo' => 'numeric'], true,
             ],
             [
-                ['foo' => null], 'foo', 'array', false,
+                ['foo' => null], 'foo', 'array|required', false,
             ],
             [
                 ['foo' => ''], 'foo', 'array', false,
@@ -238,7 +239,7 @@ class ArrayValidatorTest extends BaseTest
                 [], 'foo',  'array', true,
             ],
             [
-                ['foo' => null], 'foo', 'string', false,
+                ['foo' => null], 'foo', 'string|required', false,
             ],
         ];
     }

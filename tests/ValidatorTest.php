@@ -334,7 +334,7 @@ class ValidatorTest extends BaseTest
     {
         $validator = new ExistsValidator($this->getTranslator(), $this->getPresenceVerifier(), $this->getContainer());
         $params = ['id' => 1];
-
+        $this->setExistsValue(true);
         $this->assertTrue($validator->verify($params));
     }
 

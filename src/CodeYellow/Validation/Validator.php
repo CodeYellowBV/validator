@@ -256,6 +256,7 @@ class Validator extends \Illuminate\Validation\Validator
         }
 
         if (! ($validator instanceof Validator)) {
+            dd($validator);
             throw new \InvalidArgumentException('This is not a validator you stupid!: ' . $className);
         }
 
