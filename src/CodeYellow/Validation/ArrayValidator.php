@@ -29,7 +29,7 @@ class ArrayValidator
      * @param array $params The array that might contain the key.
      * @param string $key The key that we search for.
      * @param string $rules The rules that the key needs to satisfy.
-     * @param Illuminate\Support\MessageBag $messages MessageBag to
+     * @param \Illuminate\Support\MessageBag $messages MessageBag to
      * which messages are added if the verify fails.
      * @return boolean Does $key in $param satisfy $rules?
      */
@@ -67,7 +67,7 @@ class ArrayValidator
      * @param array $params The array that might contain the key.
      * @param string $key The key that we search for.
      * @param string $rules The rules that the key needs to satisfy.
-     * @throws \CodeYellow\Api\Validation\ValidationException
+     * @throws \CodeYellow\Validation\ValidationException
      * @return string $params[$key] parsed
      */
     public function get(array $params, $key, $rules)
